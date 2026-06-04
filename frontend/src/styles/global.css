@@ -1,0 +1,196 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.14), transparent 28rem),
+    linear-gradient(180deg, #eef4ff 0%, #f7f8fb 46%, #f1f5f9 100%);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 32px 0;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.auth-panel {
+  padding: 28px;
+}
+
+.brand,
+.topbar__actions,
+.profile-chip {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 10px;
+}
+
+.brand__mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  font-weight: 900;
+  background: linear-gradient(135deg, #2563eb, #14b8a6);
+}
+
+.brand__mark--large {
+  width: 48px;
+  height: 48px;
+  font-size: 1.4rem;
+}
+
+.brand__name {
+  font-weight: 900;
+}
+
+.topbar {
+  border-bottom: 1px solid rgba(100, 116, 139, 0.18);
+  backdrop-filter: blur(16px);
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.topbar__inner {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.topbar__actions {
+  gap: 12px;
+}
+
+.profile-chip {
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border: 1px solid rgba(100, 116, 139, 0.18);
+  border-radius: 999px;
+  background: #ffffff;
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding-top: 80px;
+}
+
+.feed-container {
+  padding-top: 20px;
+  padding-bottom: 48px;
+}
+
+.feed-heading {
+  padding: 6px 2px;
+}
+
+.composer .MuiCardContent-root,
+.post-card .MuiCardContent-root {
+  padding: 18px;
+}
+
+.image-preview,
+.post-card__image {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid rgba(100, 116, 139, 0.18);
+  background: #e5e7eb;
+}
+
+.image-preview img {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+}
+
+.image-preview__close {
+  position: absolute !important;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(255, 255, 255, 0.92) !important;
+}
+
+.post-card__text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.post-card__image img {
+  width: 100%;
+  max-height: 560px;
+  object-fit: cover;
+}
+
+.comments-list {
+  padding-top: 4px;
+}
+
+.comment {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f3f6fb;
+}
+
+.empty-state {
+  padding: 40px 16px;
+  text-align: center;
+  border: 1px dashed rgba(100, 116, 139, 0.35);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 600px) {
+  .auth-panel {
+    padding: 22px 18px;
+  }
+
+  .app-shell {
+    padding-top: 72px;
+  }
+
+  .feed-container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .brand__name,
+  .profile-chip__name,
+  .hide-xs {
+    display: none;
+  }
+
+  .topbar__actions {
+    gap: 8px;
+  }
+
+  .profile-chip {
+    padding: 2px;
+  }
+
+  .composer .MuiCardContent-root,
+  .post-card .MuiCardContent-root {
+    padding: 14px;
+  }
+}
