@@ -22,8 +22,27 @@ api.interceptors.request.use((config) => {
 
 export const assetUrl = (path) => {
   if (!path) return "";
-  if (path.startsWith("http") || path.startsWith("data:")) return path;
-  return `${UPLOADS_BASE_URL}${path}`;
+  if (path.startsWith("data:")) return path;
+
+  try {
+    const url = new URL(path);
+    const hostname = url.hostname.toLowerCase();
+    const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
+
+    if (isLocalhost && url.pathname.startsWith("/uploads")) {
+      return `${UPLOADS_BASE_URL}${url.pathname}${url.search}${url.hash}`;
+    }
+
+    return path;
+  } catch (error) {
+    // Not an absolute URL, continue to normalize relative paths
+  }
+
+  if (path.startsWith("/uploads")) {
+    return `${UPLOADS_BASE_URL}${path}`;
+  }
+
+  return `${UPLOADS_BASE_URL}/${path.replace(/^\/+/, "")}`;
 };
 
 export default api;
