@@ -1,5 +1,7 @@
 import Post from '../models/Post.js';
 
+
+
 const uploadUrl = (file) => (file ? `/uploads/${file.filename}` : '');
 
 export const createPost = async (req, res, next) => {
