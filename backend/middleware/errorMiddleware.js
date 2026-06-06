@@ -6,7 +6,10 @@ export const notFound = (req, res, next) => {
 
 export const errorHandler = (err, _req, res, _next) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  console.error(`❌ Error [${statusCode}]:`, err.message);
+  console.error("Full error:", err);
   res.status(statusCode).json({
-    message: err.message || 'Server error'
+    message: err.message || "Server error",
+    error: process.env.NODE_ENV === "development" ? err.message : undefined,
   });
 };

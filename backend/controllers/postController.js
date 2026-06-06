@@ -1,9 +1,14 @@
 import Post from "../models/Post.js";
+import mongoose from "mongoose";
 
 const uploadUrl = (file) => (file ? `/uploads/${file.filename}` : "");
 
 export const createPost = async (req, res, next) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
     const text = req.body.text?.trim() || "";
     const image = uploadUrl(req.file);
 
@@ -13,16 +18,42 @@ export const createPost = async (req, res, next) => {
         .json({ message: "Add text, an image, or both before posting" });
     }
 
-    const post = await Post.create({
+    console.log("📝 Creating post...");
+    console.log("   userId:", req.user._id);
+    console.log("   username:", req.user.username);
+    console.log("   text length:", text.length);
+    console.log("   Connection state:", mongoose.connection.readyState);
+
+    const postData = {
       userId: req.user._id,
       username: req.user.username,
-      userAvatar: req.user.profileImage,
+      userAvatar: req.user.profileImage || "",
       text,
       image,
-    });
+    };
 
+    console.log("   Post data to save:", JSON.stringify(postData, null, 2));
+
+    const post = await Post.create(postData);
+
+    if (!post || !post._id) {
+      throw new Error("Post creation failed - no ID returned");
+    }
+
+    // Verify the post exists in database
+    const verifyPost = await Post.findById(post._id);
+    if (!verifyPost) {
+      throw new Error("Post saved but could not be retrieved from database");
+    }
+
+    console.log("✅ Post saved to MongoDB with ID:", post._id);
     res.status(201).json(post);
   } catch (error) {
+    console.error("❌ CRITICAL ERROR creating post:");
+    console.error("   Message:", error.message);
+    console.error("   Name:", error.name);
+    console.error("   Stack:", error.stack);
+    console.error("   Full error:", JSON.stringify(error, null, 2));
     next(error);
   }
 };
