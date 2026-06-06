@@ -19,7 +19,7 @@ connectDB();
 app.use(
   cors({
     origin: [
-      "https://social-hub-alpha-three.vercel.app",
+      "https://social-hub-six-tau.vercel.app",
       "http://localhost:5173",
     ],
     credentials: true,
