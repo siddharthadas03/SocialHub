@@ -1,16 +1,16 @@
-import Post from '../models/Post.js';
+import Post from "../models/Post.js";
 
-
-
-const uploadUrl = (file) => (file ? `/uploads/${file.filename}` : '');
+const uploadUrl = (file) => (file ? `/uploads/${file.filename}` : "");
 
 export const createPost = async (req, res, next) => {
   try {
-    const text = req.body.text?.trim() || '';
+    const text = req.body.text?.trim() || "";
     const image = uploadUrl(req.file);
 
     if (!text && !image) {
-      return res.status(400).json({ message: 'Add text, an image, or both before posting' });
+      return res
+        .status(400)
+        .json({ message: "Add text, an image, or both before posting" });
     }
 
     const post = await Post.create({
@@ -18,7 +18,7 @@ export const createPost = async (req, res, next) => {
       username: req.user.username,
       userAvatar: req.user.profileImage,
       text,
-      image
+      image,
     });
 
     res.status(201).json(post);
@@ -41,11 +41,13 @@ export const toggleLike = async (req, res, next) => {
     const post = await Post.findById(req.params.id);
 
     if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
+      return res.status(404).json({ message: "Post not found" });
     }
 
     const userId = req.user._id.toString();
-    const existingLikeIndex = post.likes.findIndex((like) => like.userId.toString() === userId);
+    const existingLikeIndex = post.likes.findIndex(
+      (like) => like.userId.toString() === userId,
+    );
 
     if (existingLikeIndex >= 0) {
       post.likes.splice(existingLikeIndex, 1);
@@ -65,18 +67,24 @@ export const addComment = async (req, res, next) => {
     const text = req.body.text?.trim();
 
     if (!text) {
-      return res.status(400).json({ message: 'Comment text is required' });
+      return res.status(400).json({ message: "Comment text is required" });
+    }
+
+    if (text.length > 500) {
+      return res
+        .status(400)
+        .json({ message: "Comment must be 500 characters or less" });
     }
 
     const post = await Post.findById(req.params.id);
     if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
+      return res.status(404).json({ message: "Post not found" });
     }
 
     post.comments.push({
       userId: req.user._id,
       username: req.user.username,
-      text
+      text,
     });
 
     await post.save();
